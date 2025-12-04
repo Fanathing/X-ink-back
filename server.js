@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 // CORS 설정
 app.use(
   cors({
-    origin: 'http://43.201.39.164:3000',
+    origin: ['http://43.201.39.164:3000', 'http://localhost:3000'],
     credentials: true,
   }),
 );
