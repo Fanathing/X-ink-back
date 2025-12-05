@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 3001;
 // CORS 설정
 app.use(
   cors({
-    origin: ['http://43.201.39.164', 'http://localhost:3000'],
+    origin: [
+      'http://43.201.39.164',
+      'http://localhost:3000',
+      'https://x-ink.store',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

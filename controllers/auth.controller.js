@@ -54,14 +54,18 @@ const login = async (req, res) => {
       },
     );
 
-    console.log(accessToken);
-
+    // https://x-ink.store
+    // https://api.x-ink.store
     // 6. 로그인 성공 응답
-    return res.status(200).json({
-      success: true,
-      token: accessToken,
-      userId: user.id,
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true, // 이거 ture하면 https만 허용한다함 우린 false가 맞음
+      sameSite: 'None', // 우린 도메인이 다르니까 크로스사이트상태 none으로 두자
+      maxAge: 1000 * 60 * 60 * 24,
+      domain: '.x-ink.store',
     });
+
+    return res.status(200).json({ message: 'login success' });
   } catch (error) {
     console.error('로그인 오류:', error);
     return res.status(500).json({
