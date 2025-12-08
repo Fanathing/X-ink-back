@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const { Companies } = require('../models');
+const config = require('../config/cookie');
 const JWT_SECRET = process.env.JWT_SECRET;
 /**
  * POST /auth/login
@@ -58,13 +59,7 @@ const login = async (req, res) => {
     // https://x-ink.store
     // https://api.x-ink.store
     // 6. 로그인 성공 응답
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true, // 이거 ture하면 https만 허용한다함 우린 false가 맞음
-      sameSite: 'None', // 우린 도메인이 다르니까 크로스사이트상태 none으로 두자
-      maxAge: 1000 * 60 * 60 * 24,
-      domain: '.x-ink.store',
-    });
+    res.cookie('accessToken', accessToken, config);
 
     return res.status(200).json({ message: '유저 로그인 성공' });
   } catch (error) {
@@ -123,13 +118,7 @@ const companiesLogin = async (req, res) => {
     // https://x-ink.store
     // https://api.x-ink.store
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'None',
-      maxAge: 1000 * 60 * 60 * 24,
-      domain: '.x-ink.store',
-    });
+    res.cookie('accessToken', accessToken, config);
 
     return res.status(200).json({ message: '기업 로그인 성공' });
   } catch (error) {
