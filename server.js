@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const authRouter = require('./routes/auth.route.js');
+const jobsRouter = require('./routes/jobs.route.js');
 const { sequelize } = require('./models');
 const seedUsers = require('./seeders/user.seed');
 const seedCompanies = require('./seeders/companies.seed.js');
@@ -40,6 +41,9 @@ app.get('/health', (req, res) => {
 
 // 인증 라우트
 app.use('/auth', authRouter);
+
+// Jobs 라우트
+app.use('/jobs', jobsRouter);
 
 // 서버 시작 (Sequelize 연결 확인 + 더미 데이터 시딩 포함)
 const startServer = async () => {
