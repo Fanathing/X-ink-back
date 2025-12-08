@@ -5,6 +5,7 @@ const authRouter = require('./routes/auth.route.js');
 const { sequelize } = require('./models');
 const seedUsers = require('./seeders/user.seed');
 const seedCompanies = require('./seeders/companies.seed.js');
+const seedJobs = require('./seeders/jobs.seed.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -47,15 +48,19 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('✅ 데이터베이스 연결이 성공적으로 설정되었습니다.\n');
 
+    await sequelize.sync({ alter: true });
+    console.log('테이블 모델 변경사항 적용');
+
     // 더미 사용자 데이터 시딩
     await seedUsers();
     await seedCompanies();
+    await seedJobs();
 
     app.listen(PORT, () => {
-      console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다.`);
+      console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
     });
   } catch (error) {
-    console.error('❌ 서버 시작 중 오류가 발생했습니다:', error);
+    console.error('서버 시작 중 오류가 발생했습니다:', error);
     process.exit(1);
   }
 };

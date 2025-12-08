@@ -29,15 +29,15 @@ const Jobs = sequelize.define(
       allowNull: false,
       field: 'JOB_DESCRIPTION',
     },
-    STARTLINE: {
+    START_LINE: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-      field: 'STARTLINE',
+      field: 'START_LINE',
     },
-    DEADLINE: {
+    DEAD_LINE: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-      field: 'DEADLINE',
+      field: 'DEAD_LINE',
     },
     POSITION: {
       type: DataTypes.ENUM('프론트엔드', '백엔드', '블록체인'),
