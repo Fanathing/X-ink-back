@@ -8,7 +8,7 @@ const { User } = require('../models');
  */
 const seedUser = async () => {
   try {
-    console.log('🌱 더미 사용자 데이터 시딩 시작...');
+    console.log('더미 사용자 데이터 시딩 시작...');
 
     // 더미 사용자 데이터 정의
     const dummyUsers = [
@@ -60,7 +60,6 @@ const seedUser = async () => {
       });
 
       if (existingUser) {
-        console.log(`⏭️  ${userData.EMAIL} - 이미 존재함 (스킵)`);
         skippedCount++;
         continue;
       }
@@ -77,16 +76,12 @@ const seedUser = async () => {
         BIRTH_DATE: userData.BIRTH_DATE,
       });
 
-      console.log(`✅ ${userData.EMAIL} - 생성 완료`);
       createdCount++;
     }
 
-    console.log(`\n📊 시딩 결과:`);
-    console.log(`   - 생성됨: ${createdCount}명`);
-    console.log(`   - 스킵됨: ${skippedCount}명`);
-    console.log(`   - 전체: ${dummyUsers.length}명\n`);
+    console.log(`\n📊 유저 더미데이터 결과: 5명 생성`);
   } catch (error) {
-    console.error('❌ 더미 데이터 생성 중 오류 발생:', error.message);
+    console.error('더미 데이터 생성 중 오류 발생:', error.message);
     throw error;
   }
 };

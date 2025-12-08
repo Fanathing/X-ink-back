@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const { Companies } = require('../models');
 const JWT_SECRET = process.env.JWT_SECRET;
 /**
  * POST /auth/login
@@ -65,7 +66,72 @@ const login = async (req, res) => {
       domain: '.x-ink.store',
     });
 
-    return res.status(200).json({ message: 'login success' });
+    return res.status(200).json({ message: '유저 로그인 성공' });
+  } catch (error) {
+    console.error('로그인 오류:', error);
+    return res.status(500).json({
+      success: false,
+      message: '서버 오류가 발생했습니다.',
+    });
+  }
+};
+
+// 기업 로그인
+const companiesLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: '이메일과 비밀번호를 입력해주세요.',
+      });
+    }
+
+    const companies = await Companies.findOne({ where: { email } });
+
+    if (!companies) {
+      return res.status(404).json({
+        success: false,
+        message: '존재하지 않는 이메일입니다.',
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, companies.PASSWORD);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+    }
+
+    const accessToken = jwt.sign(
+      {
+        id: companies.ID,
+        name: companies.NAME,
+        role: 'companies',
+        provider: 'local',
+      },
+
+      JWT_SECRET,
+      {
+        expiresIn: '1h',
+      },
+    );
+
+    // https://x-ink.store
+    // https://api.x-ink.store
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 1000 * 60 * 60 * 24,
+      domain: '.x-ink.store',
+    });
+
+    return res.status(200).json({ message: '기업 로그인 성공' });
   } catch (error) {
     console.error('로그인 오류:', error);
     return res.status(500).json({
@@ -77,4 +143,5 @@ const login = async (req, res) => {
 
 module.exports = {
   login,
+  companiesLogin,
 };

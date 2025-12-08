@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRouter = require('./routes/auth.route.js');
 const { sequelize } = require('./models');
 const seedUsers = require('./seeders/user.seed');
+const seedCompanies = require('./seeders/companies.seed.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -48,6 +49,7 @@ const startServer = async () => {
 
     // 더미 사용자 데이터 시딩
     await seedUsers();
+    await seedCompanies();
 
     app.listen(PORT, () => {
       console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다.`);
